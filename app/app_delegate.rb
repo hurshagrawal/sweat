@@ -1,7 +1,11 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = DailyActivityViewController.alloc.init
+
+    activityViewController = DailyActivityViewController.alloc.init
+    navigationController = UINavigationController.alloc.initWithRootViewController(activityViewController)
+    @window.rootViewController = navigationController
+
     @window.makeKeyAndVisible
 
     true
