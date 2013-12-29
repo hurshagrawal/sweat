@@ -1,4 +1,7 @@
 class DailyActivityViewController < UIViewController
+  # include Teacup::TableViewDelegate
+  stylesheet :main
+
 
   def viewDidLoad
     super
@@ -8,6 +11,7 @@ class DailyActivityViewController < UIViewController
     self.view = UITableView.alloc.initWithFrame(App.frame, style:UITableViewStyleGrouped)
     self.view.delegate = self
     self.view.dataSource = self
+    self.view.stylename = :activity_table_view
 
     self.view.reloadData
   end
@@ -30,15 +34,14 @@ class DailyActivityViewController < UIViewController
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     if indexPath.section == DAILY_ACTIVITY_SECTION_INDEX
-      cell = cellForClass(DailyActivityTableViewCell, identifier:"daily_activity")
+      cell = dailyActivityCell
 
       # Add relevant data
     elsif indexPath.section == NEW_ACTIVITY_SECTION_INDEX
       if indexPath.row == tableView(self.view, numberOfRowsInSection:indexPath.section) - 1 # If last row
-        cell = cellForClass(NewActivityFormTableViewCell, identifier:"new_activity_form")
-
+        cell = newActivityFormCell
       else
-        cell = cellForClass(NewActivityTableViewCell, identifier:"new_activity")
+        cell = newActivityCell
 
         # Add relevant data
       end
@@ -47,60 +50,63 @@ class DailyActivityViewController < UIViewController
     cell
   end
 
-  def cellForClass(cellClass, identifier:identifier)
+  ACTIVITY_EXERCISE_NAME_TAG = 1000
+  SET_INFO_TAG = 1001
+  def dailyActivityCell
+    identifier = :daily_activity
     if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
       cell
     else
-      cellClass.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
-    end
-  end
+      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
 
-  ## Templating
-  class NewActivityFormTableViewCell < UITableViewCell
-    include Teacup::Layout
-
-    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
-      super.tap do
-        layout self.contentView do
-          subview UILabel,
-            text: "New Activity form yo",
-            top: 0, left: 0,
-            width: 200, height: 30,
-            textColor: UIColor.greenColor
-        end
+      layout cell.contentView do
+        subview(UILabel, :activity_exercise_name, tag: ACTIVITY_EXERCISE_NAME_TAG)
+        subview(UILabel, :set_info, tag: SET_INFO_TAG)
       end
     end
+
+    exerciseName = cell.contentView.viewWithTag(ACTIVITY_EXERCISE_NAME_TAG)
+    exerciseName.text = "Exercise!! #{rand(999)}"
+
+    setInfo = cell.contentView.viewWithTag(SET_INFO_TAG)
+    setInfo.text = "Sup, these are the sets #{rand(100)}"
+
+    cell
   end
 
-  class NewActivityTableViewCell < UITableViewCell
-    include Teacup::Layout
+  NEW_ACTIVITY_INPUT_TAG = 1002
+  def newActivityCell
+    identifier = :new_activity_cell
+    if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
+      cell
+    else
+      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
 
-    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
-      super.tap do
-        layout self.contentView do
-          subview UILabel,
-            text: "this is new activity",
-            top: 0, left: 0,
-            width: 200, height: 30,
-            backgroundColor: UIColor.blueColor
-        end
+      layout cell.contentView do
+        subview(UILabel, :new_activity_exercise_name, tag: ACTIVITY_EXERCISE_NAME_TAG)
       end
     end
+
+    exerciseName = cell.contentView.viewWithTag(ACTIVITY_EXERCISE_NAME_TAG)
+    exerciseName.text = "Exercise -- #{rand(999)}"
+
+    cell
   end
 
-  class DailyActivityTableViewCell < UITableViewCell
-    include Teacup::Layout
+  def newActivityFormCell
+    identifier = :new_activity_form_cell
+    if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
+      cell
+    else
+      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
 
-    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
-      super.tap do
-        layout self.contentView do
-          subview UILabel,
-            text: "Sup label here",
-            top: 0, left: 0,
-            width: 200, height: 30,
-            backgroundColor: UIColor.blackColor
-        end
+      layout cell.contentView do
+        subview(UITextField, :new_activity_input, tag: NEW_ACTIVITY_INPUT_TAG)
       end
     end
+
+    #newActivityInput = cell.contentView.viewWithTag(NEW_ACTIVITY_INPUT_TAG)
+
+    cell
   end
 end
