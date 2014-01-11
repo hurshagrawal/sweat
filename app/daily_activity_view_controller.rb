@@ -1,7 +1,10 @@
 class DailyActivityViewController < UIViewController
-  # include Teacup::TableViewDelegate
+  include Teacup::TableViewDelegate
   stylesheet :main
 
+  DAILY_ACTIVITY_CELL_IDENTIFIER = :daily_activity_cell
+  NEW_ACTIVITY_CELL_IDENTIFIER = :new_activity_cell
+  NEW_ACTIVITY_FORM_CELL_IDENTIFIER = :new_activity_form_cell
 
   def viewDidLoad
     super
@@ -12,6 +15,10 @@ class DailyActivityViewController < UIViewController
     self.view.delegate = self
     self.view.dataSource = self
     self.view.stylename = :activity_table_view
+
+    self.view.registerClass(DailyActivityTableViewCell, forCellReuseIdentifier:DAILY_ACTIVITY_CELL_IDENTIFIER)
+    self.view.registerClass(NewActivityFormTableViewCell, forCellReuseIdentifier:NEW_ACTIVITY_FORM_CELL_IDENTIFIER)
+    self.view.registerClass(NewActivityTableViewCell, forCellReuseIdentifier:NEW_ACTIVITY_CELL_IDENTIFIER)
 
     self.view.reloadData
   end
@@ -34,14 +41,16 @@ class DailyActivityViewController < UIViewController
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     if indexPath.section == DAILY_ACTIVITY_SECTION_INDEX
-      cell = dailyActivityCell
+      cell = tableView.dequeueReusableCellWithIdentifier(DAILY_ACTIVITY_CELL_IDENTIFIER)
+
+      cell.exerciseName.text = "sup homiez"
 
       # Add relevant data
     elsif indexPath.section == NEW_ACTIVITY_SECTION_INDEX
       if indexPath.row == tableView(self.view, numberOfRowsInSection:indexPath.section) - 1 # If last row
-        cell = newActivityFormCell
+        cell = tableView.dequeueReusableCellWithIdentifier(NEW_ACTIVITY_FORM_CELL_IDENTIFIER)
       else
-        cell = newActivityCell
+        cell = tableView.dequeueReusableCellWithIdentifier(NEW_ACTIVITY_CELL_IDENTIFIER)
 
         # Add relevant data
       end
@@ -50,63 +59,59 @@ class DailyActivityViewController < UIViewController
     cell
   end
 
-  ACTIVITY_EXERCISE_NAME_TAG = 1000
-  SET_INFO_TAG = 1001
-  def dailyActivityCell
-    identifier = :daily_activity
-    if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
-      cell
-    else
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
+  ## Templating
+  class DailyActivityTableViewCell < UITableViewCell
+    include Teacup::Layout
+    stylesheet :main
+    attr_accessor :exerciseName, :setInfo
 
-      layout cell.contentView do
-        subview(UILabel, :activity_exercise_name, tag: ACTIVITY_EXERCISE_NAME_TAG)
-        subview(UILabel, :set_info, tag: SET_INFO_TAG)
+    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
+      super
+
+      layout self.contentView do
+        self.exerciseName = subview(UILabel, :activity_exercise_name)
+        self.setInfo = subview(UILabel, :set_info)
       end
+
+      #auto self..contentView do
+        #vertical "|-[activity_exercise_name]-[set_info]-|"
+        #horizontal "|-[activity_exercise_name]-|"
+        #horizontal "|-[set_info]-|"
+      #end
+
+      self
     end
-
-    exerciseName = cell.contentView.viewWithTag(ACTIVITY_EXERCISE_NAME_TAG)
-    exerciseName.text = "Exercise!! #{rand(999)}"
-
-    setInfo = cell.contentView.viewWithTag(SET_INFO_TAG)
-    setInfo.text = "Sup, these are the sets #{rand(100)}"
-
-    cell
   end
 
-  NEW_ACTIVITY_INPUT_TAG = 1002
-  def newActivityCell
-    identifier = :new_activity_cell
-    if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
-      cell
-    else
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
+  class NewActivityFormTableViewCell < UITableViewCell
+    include Teacup::Layout
+    stylesheet :main
+    attr_accessor :newActivityInput
 
-      layout cell.contentView do
-        subview(UILabel, :new_activity_exercise_name, tag: ACTIVITY_EXERCISE_NAME_TAG)
+    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
+      super
+
+      layout self.contentView do
+        self.newActivityInput = subview(UITextField, :new_activity_input)
       end
+
+      self
     end
-
-    exerciseName = cell.contentView.viewWithTag(ACTIVITY_EXERCISE_NAME_TAG)
-    exerciseName.text = "Exercise -- #{rand(999)}"
-
-    cell
   end
 
-  def newActivityFormCell
-    identifier = :new_activity_form_cell
-    if cell = self.view.dequeueReusableCellWithIdentifier(identifier)
-      cell
-    else
-      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:identifier)
+  class NewActivityTableViewCell < UITableViewCell
+    include Teacup::Layout
+    stylesheet :main
+    attr_accessor :exerciseName
 
-      layout cell.contentView do
-        subview(UITextField, :new_activity_input, tag: NEW_ACTIVITY_INPUT_TAG)
+    def initWithStyle(style, reuseIdentifier:reuseIdentifier)
+      super
+
+      layout self.contentView do
+        self.exerciseName = subview(UILabel, :new_activity_exercise_name)
       end
+
+      self
     end
-
-    #newActivityInput = cell.contentView.viewWithTag(NEW_ACTIVITY_INPUT_TAG)
-
-    cell
   end
 end
