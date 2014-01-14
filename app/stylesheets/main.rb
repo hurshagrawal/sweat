@@ -15,17 +15,12 @@ Teacup::Stylesheet.new :main do
   style :exercise_name,
     font: UIFont.systemFontOfSize(16)
 
-  style :activity_exercise_name, extends: :exercise_name,
-    top: 0,
-    left: 10,
-    width: 200,
-    height: 30
+  style :activity_exercise_name, extends: :exercise_name
 
   style :set_info,
     font: UIFont.systemFontOfSize(12)
 
   style :new_activity_exercise_name, extends: :exercise_name,
-    text: "Exercise name",
     top: 0,
     left: 10,
     width: 200,
