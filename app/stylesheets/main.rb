@@ -1,6 +1,6 @@
 Teacup::Stylesheet.new :main do
   style :activity_table_view,
-    rowHeight: 60
+    rowHeight: 80
 
   style :input,
     font: UIFont.systemFontOfSize(18)
@@ -10,7 +10,10 @@ Teacup::Stylesheet.new :main do
     top: 0,
     left: 10,
     width: 200,
-    height: 30
+    height: 30,
+    keyboardType: UIKeyboardTypeDefault,
+    returnKeyType: UIReturnKeyNext
+
 
   style :exercise_name,
     font: UIFont.systemFontOfSize(16)
@@ -25,6 +28,5 @@ Teacup::Stylesheet.new :main do
     left: 10,
     width: 200,
     height: 30
-
 
 end

@@ -1,0 +1,63 @@
+<?xml version='1.0'?>
+<signatures version='1.0'>
+<class name='TPKeyboardAvoidingCollectionView'>
+<method selector='focusNextTextField'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='scrollToActiveTextField'>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='TPKeyboardAvoidingScrollView'>
+<method selector='contentSizeToFit'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='focusNextTextField'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='scrollToActiveTextField'>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='TPKeyboardAvoidingTableView'>
+<method selector='focusNextTextField'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='scrollToActiveTextField'>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+<class name='UIScrollView'>
+<method selector='TPKeyboardAvoiding_assignTextDelegateForViewsBeneathView:'>
+<arg declared_type='UIView*' index='0' name='view' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='TPKeyboardAvoiding_calculatedContentSizeFromSubviewFrames'>
+<retval declared_type='CGSize' type='{CGSize=ff}' type64='{CGSize=dd}'/>
+</method>
+<method selector='TPKeyboardAvoiding_findFirstResponderBeneathView:'>
+<arg declared_type='UIView*' index='0' name='view' type='@'/>
+<retval declared_type='UIView*' type='@'/>
+</method>
+<method selector='TPKeyboardAvoiding_focusNextTextField'>
+<retval declared_type='BOOL' type='B'/>
+</method>
+<method selector='TPKeyboardAvoiding_keyboardWillHide:'>
+<arg declared_type='NSNotification*' index='0' name='notification' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='TPKeyboardAvoiding_keyboardWillShow:'>
+<arg declared_type='NSNotification*' index='0' name='notification' type='@'/>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='TPKeyboardAvoiding_scrollToActiveTextField'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='TPKeyboardAvoiding_updateContentInset'>
+<retval declared_type='void' type='v'/>
+</method>
+<method selector='TPKeyboardAvoiding_updateFromContentSizeChange'>
+<retval declared_type='void' type='v'/>
+</method>
+</class>
+</signatures>
